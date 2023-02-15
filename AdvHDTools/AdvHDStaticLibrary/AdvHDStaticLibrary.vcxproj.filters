@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ARC">
+      <UniqueIdentifier>{d8b157c3-8f6d-4d41-8bd3-ef7464c93364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WS2">
+      <UniqueIdentifier>{f5dfd613-4bd0-4c50-b753-bc966153ed29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ARCV2.h">
+      <Filter>ARC</Filter>
+    </ClInclude>
+    <ClInclude Include="ARC_Struct.h">
+      <Filter>ARC</Filter>
+    </ClInclude>
+    <ClInclude Include="WS2.h">
+      <Filter>WS2</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ARCV2.cpp">
+      <Filter>ARC</Filter>
+    </ClCompile>
+    <ClCompile Include="WS2.cpp">
+      <Filter>WS2</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
