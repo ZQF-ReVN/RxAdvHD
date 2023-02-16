@@ -16,13 +16,13 @@ namespace AdvHDStaticLibrary
 		std::wstring m_wsArc;
 		std::ifstream m_ifsArc;
 		std::wstring m_wsBaseFolder;
-		ARC_Struct::ARCHeader_V2 m_Header;
-		std::vector<ARC_Struct::ARCResEntry_V2> m_vecEntry;
+		ARCV2_Struct::ARCHeader_V2 m_Header;
+		std::vector<ARCV2_Struct::ARCResEntry_V2> m_vecEntry;
 
 	private:
 		void BufferReSize(size_t szRes);
-		bool SaveResFile(ARC_Struct::ARCResEntry_V2& Entry);
-		char* ReadResData(ARC_Struct::ARCResEntry_V2& Entry);
+		bool SaveResFile(ARCV2_Struct::ARCResEntry_V2& Entry);
+		char* ReadResData(ARCV2_Struct::ARCResEntry_V2& Entry);
 		char* ReadResFile(std::wstring wsResName, size_t szRes);
 
 		bool ReadIndex();
@@ -33,10 +33,10 @@ namespace AdvHDStaticLibrary
 		ARCV2(std::wstring wsArc);
 		~ARCV2();
 
-		std::vector<ARC_Struct::ARCResEntry_V2>& GetIndex() { return m_vecEntry; }
+		std::vector<ARCV2_Struct::ARCResEntry_V2>& GetIndex() { return m_vecEntry; }
 
 		bool OpenPack();
-		void SetPackName(std::wstring wsPack);
+		void SetPackName(std::wstring wsArc);
 		void SetBaseFolder(std::wstring wsFolder);
 
 		void PrintIndex_Console();

@@ -52,9 +52,9 @@ namespace AdvHDStaticLibrary
 		return m_ifsArc.is_open();
 	}
 
-	inline void ARCV2::SetPackName(std::wstring wsPack)
+	inline void ARCV2::SetPackName(std::wstring wsArc)
 	{
-		m_wsArc = wsPack;
+		m_wsArc = wsArc;
 	}
 
 	//Set Extract File Folder or Create Pack Folder
@@ -67,11 +67,11 @@ namespace AdvHDStaticLibrary
 	}
 
 	//Read Pack Resource Data To Buffer
-	inline char* ARCV2::ReadResData(ARC_Struct::ARCResEntry_V2& Entry)
+	inline char* ARCV2::ReadResData(ARCV2_Struct::ARCResEntry_V2& Entry)
 	{
-		BufferReSize(Entry.uiResSize);
-		m_ifsArc.seekg(Entry.uiResOffset + sizeof(m_Header) + m_Header.uiIndexSize);
-		m_ifsArc.read(m_pBuffer, Entry.uiResSize);
+		BufferReSize(Entry.uiSize);
+		m_ifsArc.seekg(Entry.uiOff + sizeof(m_Header) + m_Header.uiIndexSize);
+		m_ifsArc.read(m_pBuffer, Entry.uiSize);
 		return m_pBuffer;
 	}
 
@@ -87,7 +87,7 @@ namespace AdvHDStaticLibrary
 	}
 
 	//Save Pack Resource Data To File
-	inline bool ARCV2::SaveResFile(ARC_Struct::ARCResEntry_V2& Entry)
+	inline bool ARCV2::SaveResFile(ARCV2_Struct::ARCResEntry_V2& Entry)
 	{
 		std::wstring file;
 		if (m_wsBaseFolder.size())
@@ -101,7 +101,7 @@ namespace AdvHDStaticLibrary
 		std::ofstream oFile(file, std::ios::binary);
 		if (!oFile.is_open()) return false;
 
-		oFile.write(ReadResData(Entry), Entry.uiResSize);
+		oFile.write(ReadResData(Entry), Entry.uiSize);
 
 		oFile.flush();
 
@@ -121,11 +121,11 @@ namespace AdvHDStaticLibrary
 
 		//Init Entries
 		char* pEntries = pIndex;
-		ARC_Struct::ARCResEntry_V2 pEntry = { 0 };
+		ARCV2_Struct::ARCResEntry_V2 pEntry = { 0 };
 		for (size_t iteEntry = 0; iteEntry < m_Header.uiResCount; iteEntry++)
 		{
-			pEntry.uiResSize = *(unsigned int*)(pEntries + 0);
-			pEntry.uiResOffset = *(unsigned int*)(pEntries + 4);
+			pEntry.uiSize = *(unsigned int*)(pEntries + 0);
+			pEntry.uiOff = *(unsigned int*)(pEntries + 4);
 			wcscpy_s(pEntry.aResName, 0xFF, (wchar_t*)(pEntries + 8));
 
 			m_vecEntry.emplace_back(pEntry);
@@ -143,25 +143,25 @@ namespace AdvHDStaticLibrary
 	{
 		size_t szIndex = 0;
 		std::streamsize szData = 0;
-		ARC_Struct::ARCResEntry_V2 entry = { 0 };
+		ARCV2_Struct::ARCResEntry_V2 entry = { 0 };
 
 		for (auto& file : vecFileList)
 		{
 			if (m_wsBaseFolder.size())
 			{
-				entry.uiResSize = static_cast<size_t>(TDA::FileX::GetFileSize((m_wsBaseFolder + L'/' + file).c_str()));
+				entry.uiSize = static_cast<size_t>(TDA::FileX::GetFileSize((m_wsBaseFolder + L'/' + file).c_str()));
 			}
 			else
 			{
-				entry.uiResSize = static_cast<size_t>(TDA::FileX::GetFileSize(file.c_str()));
+				entry.uiSize = static_cast<size_t>(TDA::FileX::GetFileSize(file.c_str()));
 			}
 
-			entry.uiResOffset = static_cast<size_t>(szData);
+			entry.uiOff = static_cast<size_t>(szData);
 			wcscpy_s(entry.aResName, 0xFF, file.c_str());
 
 			m_vecEntry.emplace_back(entry);
 
-			szData += entry.uiResSize;
+			szData += entry.uiSize;
 			szIndex += ((wcslen(entry.aResName) + 1) * 2) + 8;
 		}
 
@@ -175,8 +175,8 @@ namespace AdvHDStaticLibrary
 		{
 			std::wcout
 				<< L"FileName:" << entry.aResName << L'\n'
-				<< L"FileSize:" << std::hex << L"0x" << entry.uiResSize << L'\n'
-				<< L"FileOff :" << std::hex << L"0x" << entry.uiResOffset << L"\n\n";
+				<< L"FileSize:" << std::hex << L"0x" << entry.uiSize << L'\n'
+				<< L"FileOff :" << std::hex << L"0x" << entry.uiOff << L"\n\n";
 		}
 	}
 
@@ -190,8 +190,8 @@ namespace AdvHDStaticLibrary
 		for (auto& entry : m_vecEntry)
 		{
 			oInfo << L"FileName:" << entry.aResName << L'\n';
-			oInfo << L"FileSize:" << std::hex << L"0x" << entry.uiResSize << L'\n';
-			oInfo << L"FileOff :" << std::hex << L"0x" << entry.uiResOffset << L"\n\n";
+			oInfo << L"FileSize:" << std::hex << L"0x" << entry.uiSize << L'\n';
+			oInfo << L"FileOff :" << std::hex << L"0x" << entry.uiOff << L"\n\n";
 		}
 
 		oInfo.flush();
@@ -229,7 +229,7 @@ namespace AdvHDStaticLibrary
 		//Write Data
 		for (auto& entry : m_vecEntry)
 		{
-			oArc.write(ReadResFile(m_wsBaseFolder + L'/' + entry.aResName, entry.uiResSize), entry.uiResSize);
+			oArc.write(ReadResFile(m_wsBaseFolder + L'/' + entry.aResName, entry.uiSize), entry.uiSize);
 		}
 
 		oArc.flush();

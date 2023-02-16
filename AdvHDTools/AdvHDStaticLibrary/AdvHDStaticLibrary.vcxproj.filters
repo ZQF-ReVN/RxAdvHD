@@ -7,6 +7,9 @@
     <Filter Include="WS2">
       <UniqueIdentifier>{f5dfd613-4bd0-4c50-b753-bc966153ed29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="WIP">
+      <UniqueIdentifier>{a73c27d0-76ed-44bf-a931-e89ea105ca07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ARCV2.h">
@@ -18,6 +21,15 @@
     <ClInclude Include="WS2.h">
       <Filter>WS2</Filter>
     </ClInclude>
+    <ClInclude Include="ARCV1.h">
+      <Filter>ARC</Filter>
+    </ClInclude>
+    <ClInclude Include="WIP.h">
+      <Filter>WIP</Filter>
+    </ClInclude>
+    <ClInclude Include="WIP_Struct.h">
+      <Filter>WIP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ARCV2.cpp">
@@ -25,6 +37,12 @@
     </ClCompile>
     <ClCompile Include="WS2.cpp">
       <Filter>WS2</Filter>
+    </ClCompile>
+    <ClCompile Include="ARCV1.cpp">
+      <Filter>ARC</Filter>
+    </ClCompile>
+    <ClCompile Include="WIP.cpp">
+      <Filter>WIP</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
