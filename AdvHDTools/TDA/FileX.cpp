@@ -124,5 +124,16 @@ namespace TDA
 
 		return szFile;
 	}
+
+	std::streamsize FileX::GetFileSize(const char* msFile)
+	{
+		std::ifstream ifsFile(msFile, std::ios::binary);
+		if (!ifsFile.is_open()) return false;
+
+		ifsFile.seekg(0, std::ios::end);
+		std::streamsize szFile = ifsFile.tellg();
+
+		return szFile;
+	}
 }
 

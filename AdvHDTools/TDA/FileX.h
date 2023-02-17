@@ -20,6 +20,7 @@ namespace TDA
 		static bool        PathRemoveFileName(std::wstring& wsPath, std::wstring& wsRemoved);
 
 		static std::streamsize GetFileSize(const wchar_t* wsFile);
+		static std::streamsize GetFileSize(const char* msFile);
 
 		template <typename FSTREAM>
 		static std::streamsize GetFileSize(FSTREAM& fsFile)

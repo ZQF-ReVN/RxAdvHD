@@ -78,7 +78,6 @@ BOOL FileExist()
 	}
 }
 
-BOOL g_isDone = TRUE;
 VOID __declspec(naked) ReadFileUnity_Hook()
 {
 	HOOKCODE_START;

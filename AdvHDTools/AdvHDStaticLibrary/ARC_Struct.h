@@ -6,12 +6,12 @@ namespace AdvHDStaticLibrary
 	namespace ARCV1_Struct
 	{
 		/*
-        * ARC Pack File V1
-        *	Header
-        *	Type[ARCHeader.uiTypeCount]
-        *	Entry[??]
-        *	Data
-        */
+		* ARC Pack File V1
+		*	Header
+		*	Type[ARCHeader.uiTypeCount]
+		*	Entry[??]
+		*	Data
+		*/
 		struct ARCHeader_V1
 		{
 			unsigned int uiTypeCount;
@@ -24,23 +24,23 @@ namespace AdvHDStaticLibrary
 			unsigned int uiIndexOff;    // (Pack File Offset)
 		};
 
-        #pragma pack(1)
+		#pragma pack(1)
 		struct ARCResEntry_V1
 		{
 			char aResName[0x9];         // (Null Character)
 			unsigned int uiSize;
 			unsigned int uiOff;         // (Pack File Offset)
 		};
-        #pragma pack()
+		#pragma pack()
 	}
 
 	namespace ARCV2_Struct
 	{
 		/*
 		* ARC Pack File V2
-	    *   Header
-	    *   Entry[Header.uiResCount]
-	    *   Data
+		*	Header
+		*	Entry[Header.uiResCount]
+		*	Data
 		*/
 		struct ARCHeader_V2
 		{
@@ -48,13 +48,13 @@ namespace AdvHDStaticLibrary
 			unsigned int uiIndexSize;
 		};
 
-        #pragma pack(1)
+		#pragma pack(1)
 		struct ARCResEntry_V2
 		{
 			unsigned int uiSize;
 			unsigned int uiOff;         // (Data Sec Offset)
 			wchar_t aResName[0xFF];     // (Null Character)
 		};
-        #pragma pack()
+		#pragma pack()
 	}
 }

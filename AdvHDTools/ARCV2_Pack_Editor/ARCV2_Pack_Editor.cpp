@@ -10,7 +10,8 @@ using namespace AdvHDStaticLibrary;
 int main()
 {
 	ARCV1 arc1;
-	arc1.Extract(L"Chip.arc", L"Chip");
+	arc1.Create("Voice.arc", "Voice");
+	//arc1.Extract("Voice.arc", "Voice");
 	//WS2::Enc(L"01_02.ws2");
 	//WS2::Enc(L"01_01.ws2");
 	//ARCV2 arc;
