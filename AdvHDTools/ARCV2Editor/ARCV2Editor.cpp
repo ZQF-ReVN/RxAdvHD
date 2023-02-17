@@ -4,33 +4,16 @@
 
 using namespace AdvHDStaticLibrary;
 
-void ARCV2Editor()
+int wmain(int argc, wchar_t* argv[])
 {
-	wchar_t op = 0;
-	std::wstring pack;
-	std::wstring folder;
-
-	std::wcout
-		<< L"Input E Extract Pack\n"
-		<< L"Input P Create Pack\n" << std::endl;
-
-	while (true)
+	if (argc > 1)
 	{
-		std::wcout << L"Input:";
-		std::wcin >> op;
-
-		switch (op)
+		switch (*argv[1])
 		{
 		case L'E':
 		{
-			std::wcout << L"Input Pack Name:";
-			std::wcin >> pack;
-
-			std::wcout << L"Input Folder Name:";
-			std::wcin >> folder;
-
 			ARCV2 arc;
-			if (arc.Extract(pack, folder))
+			if (arc.Extract(argv[2], argv[3]))
 			{
 				std::wcout << L"Pack Extracted\n";
 			}
@@ -43,14 +26,8 @@ void ARCV2Editor()
 
 		case L'P':
 		{
-			std::wcout << L"Input Pack Name:";
-			std::wcin >> pack;
-
-			std::wcout << L"Input Folder Name:";
-			std::wcin >> folder;
-
 			ARCV2 arc;
-			if (arc.Create(pack, folder))
+			if (arc.Create(argv[2], argv[3]))
 			{
 				std::wcout << L"Pack Created\n";
 			}
@@ -64,12 +41,16 @@ void ARCV2Editor()
 		default:
 			std::wcout << L"Command Error!\n" << std::endl;
 		}
-
-		std::wcout << std::endl;
 	}
-}
-
-int main()
-{
-	ARCV2Editor();
+	else
+	{
+		std::wcout
+			<< L"Command:\n"
+			<< L"E Extract, P Pack\n"
+			<< L"ARCV2Editor.exe [Command] [PackName] [FolderName]\n\n"
+			<< L"Example:\n"
+			<< L"ARCV2Editor.exe E Chip5.arc Chip5\n"
+			<< L"ARCV2Editor.exe P Bgm.arc Bgm\n"
+			<< std::endl;
+	}
 }

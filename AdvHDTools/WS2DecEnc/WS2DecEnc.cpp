@@ -36,7 +36,8 @@ int wmain(int argc, wchar_t* argv[])
 	{
 		std::wcout
 			<< L"Command:\n"
-			<< L"D Dec, E Enc\n\n"
+			<< L"D Dec, E Enc\n"
+			<< L"WS2DecEnc.exe [Command] [FileName]\n\n"
 			<< L"Example:\n"
 			<< L"WS2DecEnc.exe D 01_01.ws2\n"
 			<< L"WS2DecEnc.exe E 01_01.ws2\n"
