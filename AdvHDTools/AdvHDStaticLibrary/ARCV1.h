@@ -32,8 +32,9 @@ namespace AdvHDStaticLibrary
 
 		bool  FindType(std::string& msSuffix);
 
-		bool ReadIndex();
-		bool CreateIndex(std::vector<std::string>& vecFileList);
+		bool   ReadIndex();
+		size_t CreateType(std::vector<std::string>& vecFileList);
+		bool   CreateIndex(std::vector<std::string>& vecFileList);
 
 	public:
 		ARCV1();

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{fbf2157a-cd3e-4249-af96-f382068af02c}</ProjectGuid>
-    <RootNamespace>ARCV2PackEditor</RootNamespace>
+    <ProjectGuid>{16ca87d5-3868-48aa-87fc-4c418aa5e7c0}</ProjectGuid>
+    <RootNamespace>ARCV1Editor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ARCV2_Pack_Editor.cpp" />
+    <ClCompile Include="ARCV1Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdvHDStaticLibrary\AdvHDStaticLibrary.vcxproj">

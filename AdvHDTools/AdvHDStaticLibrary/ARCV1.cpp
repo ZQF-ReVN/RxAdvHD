@@ -35,25 +35,25 @@ namespace AdvHDStaticLibrary
 		SetBaseFolder(msFolder);
 		if (!(OpenPack() && ReadIndex())) return false;
 
-		size_t count = 0;
-		std::string mFileName;
+		std::string mResName;
+		size_t resCounted = 0;
 		ARCV1_Struct::ARCResEntry_V1* pEntry = nullptr;
-		for (auto& type : m_vecType)
+		for (auto& iteType : m_vecType)
 		{
-			for (size_t iteRes = 0; iteRes < type.uiResCount; iteRes++)
+			for (size_t resCount = 0; resCount < iteType.uiResCount; resCount++)
 			{
-				pEntry = &m_vecEntry[count + iteRes];
+				pEntry = &m_vecEntry[resCounted + resCount];
 
-				//Splicing Suffix
-				mFileName = pEntry->aResName;
-				mFileName.append(".");
-				mFileName.append(type.aTypeName);
+				//Splicing Extension
+				mResName = pEntry->aResName;
+				mResName.append(".");
+				mResName.append(iteType.aTypeName);
 
 				//Save
-				SaveResFile(*pEntry, mFileName);
+				SaveResFile(*pEntry, mResName);
 			}
 
-			count += type.uiResCount; //Next Type
+			resCounted += iteType.uiResCount; //Next Type
 		}
 
 		return true;
@@ -61,16 +61,60 @@ namespace AdvHDStaticLibrary
 
 	bool ARCV1::Create(std::string msArc, std::string msFolder)
 	{
-		if (!OpenPack()) return false;
-
+		//Set Pack Name
 		SetPackName(msArc);
+
+		//Create Pack File
+		std::ofstream oArc(m_msArc, std::ios::binary);
+		if (!oArc.is_open()) return false;
+
+		//Set Work Folder
 		SetBaseFolder(msFolder);
 
 		//Get Files Name
-		TDA::EnumFilesA enumFile(m_msBaseFolder);
-		std::vector<std::string>& vecFilesNameList = enumFile.GetAllFilesName();
+		TDA::EnumFilesA enumRes(m_msBaseFolder);
 
-		return CreateIndex(vecFilesNameList);
+		//Create Index
+		if (!CreateIndex(enumRes.GetAllFilesName())) return false;
+
+		//Write Header
+		oArc.write(reinterpret_cast<char*>(&m_Header), sizeof(m_Header));
+
+		//Write Types
+		for (auto& iteType : m_vecType)
+		{
+			oArc.write(reinterpret_cast<char*>(&iteType), sizeof(iteType));
+		}
+
+		//Write Index
+		for (auto& iteEntry : m_vecEntry)
+		{
+			oArc.write(reinterpret_cast<char*>(&iteEntry), sizeof(iteEntry));
+		}
+
+		//Write Res
+		std::string resName;
+		size_t resCounted = 0;
+		ARCV1_Struct::ARCResEntry_V1* pEntry = nullptr;
+		for (auto& iteType : m_vecType)
+		{
+			for (size_t resCount = 0; resCount < iteType.uiResCount; resCount++)
+			{
+				pEntry = &m_vecEntry[resCounted + resCount];
+
+				resName = pEntry->aResName;
+				resName.append(".");
+				resName.append(iteType.aTypeName);
+
+				oArc.write(ReadResFile(resName, pEntry->uiSize), pEntry->uiSize);
+			}
+
+			resCounted += iteType.uiResCount; // Next Type
+		}
+
+		oArc.flush();
+
+		return true;
 	}
 
 	void ARCV1::SetPackName(std::string msArc)
@@ -174,11 +218,11 @@ namespace AdvHDStaticLibrary
 		return true;
 	}
 
-	bool ARCV1::FindType(std::string& msSuffix)
+	bool ARCV1::FindType(std::string& msExtension)
 	{
 		for (auto& iteType : m_vecType)
 		{
-			if (msSuffix.find(iteType.aTypeName) == 0)
+			if (msExtension.find(iteType.aTypeName) == 0)
 			{
 				iteType.uiResCount++;
 				return true;
@@ -188,31 +232,27 @@ namespace AdvHDStaticLibrary
 		return false;
 	}
 
-	bool ARCV1::CreateIndex(std::vector<std::string>& vecFileList)
+	size_t ARCV1::CreateType(std::vector<std::string>& vecResList)
 	{
-		//Create Pack
-		std::ofstream oArc(m_msArc, std::ios::binary);
-		if (!oArc.is_open()) return false;
-
 		//Create Type
-		std::string fileSuffix;
+		std::string resExtension;
 		ARCV1_Struct::ARCResType_V1 type = { 0 };
-		for (auto& file : vecFileList)
+		for (auto& res : vecResList)
 		{
-			//Processing File Suffix
-			if (file[file.size() - 4] != '.') return false;
-			fileSuffix = file.substr(file.size() - 3);
-			if (fileSuffix.size() != 3) return false;
+			if (res[res.size() - 4] != '.') return false;
+			resExtension = res.substr(res.size() - 3);
+			if (resExtension.size() != 3) return false;
 
-			//Processing Type
-			if (!FindType(fileSuffix))
+			if (!FindType(resExtension))
 			{
-				type.aTypeName[0] = fileSuffix[0];
-				type.aTypeName[1] = fileSuffix[1];
-				type.aTypeName[2] = fileSuffix[2];
+				type.aTypeName[0] = resExtension[0];
+				type.aTypeName[1] = resExtension[1];
+				type.aTypeName[2] = resExtension[2];
 				type.uiResCount = 1;
 				m_vecType.emplace_back(type);
 			}
+
+			memset(&type, 0x0, sizeof(type));
 		}
 
 		//Init Type Index
@@ -223,21 +263,26 @@ namespace AdvHDStaticLibrary
 			indexOff += iteType.uiResCount * sizeof(ARCV1_Struct::ARCResEntry_V1); // Next Type Index
 		}
 
-		//Create Index(Entries)
-		size_t dataOff = indexOff;
-		std::string fileName;
+		return indexOff;
+	}
+
+	bool ARCV1::CreateIndex(std::vector<std::string>& vecResList)
+	{
+		size_t dataOff = CreateType(vecResList);
+
+		std::string resName;
 		ARCV1_Struct::ARCResEntry_V1 entry = { 0 };
 		for (auto& iteType : m_vecType)
 		{
-			for (auto& file : vecFileList)
+			for (auto& res : vecResList)
 			{
-				if (file.find(iteType.aTypeName, file.size() - 4) == std::string::npos) continue;
-				fileName = file.substr(0, file.size() - 4);
-				if (fileName.size() > 9) return false;
+				if (res.find(iteType.aTypeName, res.size() - 4) == std::string::npos) continue;
+				resName = res.substr(0, res.size() - 4);
+				if (resName.size() > 9) return false;
 
-				memcpy(entry.aResName, fileName.data(), fileName.size());
+				memcpy(entry.aResName, resName.data(), resName.size());
 				entry.uiOff = dataOff;
-				entry.uiSize = static_cast<size_t>(TDA::FileX::GetFileSize((m_msBaseFolder + '/' + file).c_str()));
+				entry.uiSize = static_cast<size_t>(TDA::FileX::GetFileSize((m_msBaseFolder + '/' + res).c_str()));
 				m_vecEntry.emplace_back(entry);
 
 				dataOff += entry.uiSize;
@@ -247,44 +292,6 @@ namespace AdvHDStaticLibrary
 
 		//Init Header
 		m_Header.uiTypeCount = m_vecType.size();
-
-
-		//Write Header
-		oArc.write(reinterpret_cast<char*>(&m_Header), sizeof(m_Header));
-
-		//Write Types
-		for (auto& iteType : m_vecType)
-		{
-			oArc.write(reinterpret_cast<char*>(&iteType), sizeof(iteType));
-		}
-
-		//Write Index
-		for (auto& iteEntry : m_vecEntry)
-		{
-			oArc.write(reinterpret_cast<char*>(&iteEntry), sizeof(iteEntry));
-		}
-
-		//Write Res
-		std::string resName;
-		size_t countRes = 0;
-		ARCV1_Struct::ARCResEntry_V1* pEntry = nullptr;
-		for (auto& iteType : m_vecType)
-		{
-			for (size_t countEntry = 0; countEntry < iteType.uiResCount; countEntry++)
-			{
-				pEntry = &m_vecEntry[countRes + countEntry];
-
-				resName = pEntry->aResName;
-				resName.append(".");
-				resName.append(iteType.aTypeName);
-
-				oArc.write(ReadResFile(resName, pEntry->uiSize), pEntry->uiSize);
-			}
-
-			countRes += iteType.uiResCount;
-		}
-
-		oArc.flush();
 
 		return true;
 	}

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ARCV2_Pack_Editor.cpp">
+    <ClCompile Include="ARCV2Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
