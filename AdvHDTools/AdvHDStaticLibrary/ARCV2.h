@@ -4,15 +4,14 @@
 #include <fstream>
 
 #include "ARC_Struct.h"
+#include "..\TDA\AutoBuffer.h"
 
 
 namespace AdvHDStaticLibrary
 {
-	class ARCV2
+	class ARCV2 : public TDA::AutoBuffer
 	{
 	private:
-		char* m_pBuffer;
-		size_t m_szAllocMax;
 		std::wstring m_wsArc;
 		std::ifstream m_ifsArc;
 		std::wstring m_wsBaseFolder;
@@ -20,7 +19,6 @@ namespace AdvHDStaticLibrary
 		std::vector<ARCV2_Struct::ARCResEntry_V2> m_vecEntry;
 
 	private:
-		void BufferReSize(size_t szRes);
 		bool SaveResFile(ARCV2_Struct::ARCResEntry_V2& Entry);
 		char* ReadResData(ARCV2_Struct::ARCResEntry_V2& Entry);
 		char* ReadResFile(std::wstring wsResName, size_t szRes);

@@ -9,40 +9,19 @@
 
 namespace AdvHDStaticLibrary
 {
-	ARCV2::ARCV2() :
-		m_pBuffer(nullptr), m_szAllocMax(0), m_Header({ 0 })
+	ARCV2::ARCV2() : m_Header({ 0 })
 	{
 
 	}
 
-	ARCV2::ARCV2(std::wstring wsArc) :
-		m_pBuffer(nullptr), m_szAllocMax(0), m_Header({ 0 })
+	ARCV2::ARCV2(std::wstring wsArc) : m_Header({ 0 })
 	{
 		SetPackName(wsArc);
 	}
 
 	ARCV2::~ARCV2()
 	{
-		if (m_pBuffer)
-		{
-			delete[] m_pBuffer;
-		}
-	}
 
-	inline void ARCV2::BufferReSize(size_t szRes)
-	{
-		if (!m_szAllocMax)
-		{
-			m_pBuffer = new char[szRes];
-			m_szAllocMax = szRes;
-		}
-
-		if (szRes > m_szAllocMax)
-		{
-			delete[] m_pBuffer;
-			m_pBuffer = new char[szRes];
-			m_szAllocMax = szRes;
-		}
 	}
 
 	inline bool ARCV2::OpenPack()

@@ -8,7 +8,7 @@ namespace AdvHDStaticLibrary
 		/*
 		* WIP File
 		*	WIPHeader
-		*	WIPFrame[WIPHeader.usFrames]
+		*	WIPEntry[WIPHeader.usFrames]
 		*	Data
 		*/
 		struct WIPHeader
@@ -18,7 +18,7 @@ namespace AdvHDStaticLibrary
 			unsigned short usBpp;       // Bits Per Pixel
 		};
 
-		struct WIPFrame
+		struct WIPEntry
 		{
 			unsigned int uiHeigh;
 			unsigned int uiWidth;

@@ -8,7 +8,6 @@ namespace TDA
 	class FileX
 	{
 	public:
-		static bool        GetWokrDir(std::wstring& wsDir, const wchar_t* lpApendDir);
 		static size_t      GetCurrentDirectoryPath(char* pPath);
 		static size_t      GetCurrentDirectoryPath(wchar_t* pPath);
 		static size_t      GetCurrentDirectoryPath(std::string& msPath);

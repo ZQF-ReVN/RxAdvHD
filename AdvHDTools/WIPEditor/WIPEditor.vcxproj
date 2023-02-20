@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6025b745-02f7-47ea-9911-35649da8cea0}</ProjectGuid>
-    <RootNamespace>TDA</RootNamespace>
+    <ProjectGuid>{c29b6568-c732-42ee-8054-6c342b0f772e}</ProjectGuid>
+    <RootNamespace>WIPEditor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -127,20 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AutoBuffer.h" />
-    <ClInclude Include="ConsoleX.h" />
-    <ClInclude Include="EnumFiles.h" />
-    <ClInclude Include="FileX.h" />
-    <ClInclude Include="MemX.h" />
-    <ClInclude Include="StringX.h" />
+    <ClCompile Include="WIPEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AutoBuffer.cpp" />
-    <ClCompile Include="ConsoleX.cpp" />
-    <ClCompile Include="EnumFiles.cpp" />
-    <ClCompile Include="FileX.cpp" />
-    <ClCompile Include="MemX.cpp" />
-    <ClCompile Include="StringX.cpp" />
+    <ProjectReference Include="..\AdvHDStaticLibrary\AdvHDStaticLibrary.vcxproj">
+      <Project>{46621bf2-ea55-43a2-89e1-6411ab888094}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

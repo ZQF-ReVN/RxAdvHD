@@ -5,26 +5,6 @@
 
 namespace TDA
 {
-	bool FileX::GetWokrDir(std::wstring& wsDir, const wchar_t* lpApendDir)
-	{
-		wsDir.resize(MAX_PATH);
-		DWORD szWorkDir = GetCurrentDirectoryW(MAX_PATH, const_cast<wchar_t*>(wsDir.data()));
-		if (szWorkDir < MAX_PATH)
-		{
-			wsDir.resize(szWorkDir);
-			if (lpApendDir)
-			{
-				wsDir.append(lpApendDir);
-			}
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	size_t FileX::GetCurrentDirectoryPath(char* pPath)
 	{
 		size_t sz = GetCurrentDirectoryA(MAX_PATH, pPath);

@@ -9,24 +9,19 @@
 
 namespace AdvHDStaticLibrary
 {
-	ARCV1::ARCV1() :
-		m_pBuffer(nullptr), m_szAllocMax(0), m_Header({ 0 })
+	ARCV1::ARCV1() : m_Header({ 0 })
 	{
 
 	}
 
-	ARCV1::ARCV1(std::string msArc) :
-		m_pBuffer(nullptr), m_szAllocMax(0), m_Header({ 0 })
+	ARCV1::ARCV1(std::string msArc) : m_Header({ 0 })
 	{
 		SetPackName(msArc);
 	}
 
 	ARCV1::~ARCV1()
 	{
-		if (m_pBuffer)
-		{
-			delete[] m_pBuffer;
-		}
+
 	}
 
 	bool ARCV1::Extract(std::string msArc, std::string msFolder)
@@ -136,22 +131,6 @@ namespace AdvHDStaticLibrary
 		m_ifsArc.open(m_msArc, std::ios::binary);
 
 		return m_ifsArc.is_open();
-	}
-
-	void ARCV1::BufferReSize(size_t szRes)
-	{
-		if (!m_szAllocMax)
-		{
-			m_pBuffer = new char[szRes];
-			m_szAllocMax = szRes;
-		}
-
-		if (szRes > m_szAllocMax)
-		{
-			delete[] m_pBuffer;
-			m_pBuffer = new char[szRes];
-			m_szAllocMax = szRes;
-		}
 	}
 
 	//Read Pack Resource Data To Buffer

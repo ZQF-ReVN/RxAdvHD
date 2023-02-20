@@ -1,51 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="FileX">
+      <UniqueIdentifier>{c94d18e4-fb6f-461e-87df-459dd7a17698}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="MemX">
+      <UniqueIdentifier>{d3e7899b-ef1e-4236-bd68-ab30b90cff58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="StringX">
+      <UniqueIdentifier>{9b2a9c00-c415-4256-b8ec-fee58f187e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConsoleX">
+      <UniqueIdentifier>{554e75c6-5048-4ea9-b63f-69d6ce7bf5f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnumFiles">
+      <UniqueIdentifier>{adc60950-44b8-4e06-9f4b-570c4909436a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnumFiles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileX.h">
-      <Filter>Header Files</Filter>
+      <Filter>FileX</Filter>
     </ClInclude>
     <ClInclude Include="MemX.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleX.h">
-      <Filter>Header Files</Filter>
+      <Filter>MemX</Filter>
     </ClInclude>
     <ClInclude Include="StringX.h">
-      <Filter>Header Files</Filter>
+      <Filter>StringX</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleX.h">
+      <Filter>ConsoleX</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumFiles.h">
+      <Filter>EnumFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoBuffer.h">
+      <Filter>MemX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EnumFiles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FileX.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>FileX</Filter>
     </ClCompile>
     <ClCompile Include="MemX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleX.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>MemX</Filter>
     </ClCompile>
     <ClCompile Include="StringX.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>StringX</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleX.cpp">
+      <Filter>ConsoleX</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumFiles.cpp">
+      <Filter>EnumFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoBuffer.cpp">
+      <Filter>MemX</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
