@@ -7,5 +7,6 @@ int main()
 {
 	WIP wip;
 	//wip.SplitFrame(L"cfgbg.wip");
-	wip.MergeFrame(L"cfgbg");
+	//wip.MergeFrame(L"cfgbg");
+	wip.Decode(L"bg101_05.wip");
 }

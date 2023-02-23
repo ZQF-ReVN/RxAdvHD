@@ -20,8 +20,8 @@ namespace AdvHDStaticLibrary
 
 		struct WIPEntry
 		{
-			unsigned int uiHeigh;
 			unsigned int uiWidth;
+			unsigned int uiHeigh;
 			unsigned int uiX;
 			unsigned int uiY;
 			unsigned int uiZ;

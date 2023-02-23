@@ -17,7 +17,7 @@ namespace TDA
 		}
 	}
 
-	void AutoBuffer::BufferReSize(size_t szRes)
+	char* AutoBuffer::BufferReSize(size_t szRes)
 	{
 		if (!m_szAllocMax)
 		{
@@ -31,5 +31,7 @@ namespace TDA
 			m_pBuffer = new char[szRes];
 			m_szAllocMax = szRes;
 		}
+
+		return m_pBuffer;
 	}
 }

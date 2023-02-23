@@ -27,6 +27,7 @@
     <ClInclude Include="ARCV1.h" />
     <ClInclude Include="ARCV2.h" />
     <ClInclude Include="ARC_Struct.h" />
+    <ClInclude Include="LZSS.h" />
     <ClInclude Include="WIP.h" />
     <ClInclude Include="WIP_Struct.h" />
     <ClInclude Include="WS2.h" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <ClCompile Include="ARCV1.cpp" />
     <ClCompile Include="ARCV2.cpp" />
+    <ClCompile Include="LZSS.cpp" />
     <ClCompile Include="WIP.cpp" />
     <ClCompile Include="WS2.cpp" />
   </ItemGroup>

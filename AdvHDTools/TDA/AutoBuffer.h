@@ -12,6 +12,6 @@ namespace TDA
 		AutoBuffer();
 		~AutoBuffer();
 
-		void BufferReSize(size_t szRes);
+		char* BufferReSize(size_t szRes);
 	};
 }

@@ -10,6 +10,9 @@
     <Filter Include="WIP">
       <UniqueIdentifier>{a73c27d0-76ed-44bf-a931-e89ea105ca07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LZSS">
+      <UniqueIdentifier>{db3f6e54-88f2-4998-9e81-ca9ff5590d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ARCV2.h">
@@ -30,6 +33,9 @@
     <ClInclude Include="WIP_Struct.h">
       <Filter>WIP</Filter>
     </ClInclude>
+    <ClInclude Include="LZSS.h">
+      <Filter>LZSS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ARCV2.cpp">
@@ -43,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="WIP.cpp">
       <Filter>WIP</Filter>
+    </ClCompile>
+    <ClCompile Include="LZSS.cpp">
+      <Filter>LZSS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

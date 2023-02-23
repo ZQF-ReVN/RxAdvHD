@@ -32,5 +32,17 @@ namespace AdvHDStaticLibrary
 
 		bool SplitFrame(std::wstring wsWIP);
 		bool MergeFrame(std::wstring wsFolder);
+		bool Decode(std::wstring wsWIP);
+	};
+
+	class WIPDecoder : public  TDA::AutoBuffer
+	{
+	public:
+		WIPDecoder();
+		~WIPDecoder();
+
+		size_t DecodePixelArray(char* pEnc, char** ppDec, size_t nWidth, size_t nHeigh, size_t nChannel);
+		void MergeChannel(char* pSplit, char* pMerged, size_t nWidth, size_t nHeigh, size_t nChannel);
+
 	};
 }
