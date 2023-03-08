@@ -10,6 +10,6 @@ Pack or Extract For New Version
 # WIPEditor
 Decode WIP To WebP  
 Encode WIP To WebP  
-Multi-WIP Separation  
+Multi-WIP Split  
 Multi-WIP Merge  
 
