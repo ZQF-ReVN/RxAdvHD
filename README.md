@@ -1,5 +1,7 @@
 # AdvHDTools
 Under Development。。。。
+# AdvHDFileHook
+Directly Read / Replace Resource Files（For New Version）  
 
 # ARCV1Editor
 Pack or Extract For Old Version  
