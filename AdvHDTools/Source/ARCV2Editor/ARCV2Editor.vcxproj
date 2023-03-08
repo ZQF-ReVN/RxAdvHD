@@ -18,11 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ARCV2Editor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\AdvHDStaticLibrary\AdvHDStaticLibrary.vcxproj">
+      <Project>{46621bf2-ea55-43a2-89e1-6411ab888094}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c29b6568-c732-42ee-8054-6c342b0f772e}</ProjectGuid>
-    <RootNamespace>WIPEditor</RootNamespace>
+    <ProjectGuid>{ef09e6b1-59d9-4775-9375-9d5de70eaced}</ProjectGuid>
+    <RootNamespace>ARCV2Editor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -126,14 +134,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="WIPEditor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AdvHDStaticLibrary\AdvHDStaticLibrary.vcxproj">
-      <Project>{46621bf2-ea55-43a2-89e1-6411ab888094}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

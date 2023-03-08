@@ -1,5 +1,5 @@
 #include "WS2.h"
-#include "..\TDA\FileX.h"
+#include "../../ThirdParty/TDA/FileX.h"
 
 #include <fstream>
 

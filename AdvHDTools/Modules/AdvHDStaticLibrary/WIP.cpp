@@ -1,11 +1,12 @@
 #include "WIP.h"
-#include "..\TDA\FileX.h"
-#include "..\AdvHDStaticLibrary\LZSS.h"
-#include "..\Modules\libwebp\encode.h"
+#include "LZSS.h"
+#include "../../ThirdParty/TDA/FileX.h"
+#include "../../ThirdParty/libwebp/encode.h"
+#include "../../ThirdParty/libwebp/decode.h"
 
 #include <Windows.h>
 
-#pragma comment(lib,"..\\Modules\\libwebp\\libwebp.lib")
+#pragma comment(lib,"../../ThirdParty/libwebp/libwebp.lib")
 
 
 namespace AdvHDStaticLibrary
@@ -43,7 +44,7 @@ namespace AdvHDStaticLibrary
 
 	bool WIP::MergeFrame(std::wstring wsFolder)
 	{
-		OpenWIP(wsFolder + L".wip");
+		if (!OpenWIP(wsFolder + L".wip")) return false;
 
 		WIP_Struct::WIPEntry frame = { 0 };
 		for (size_t iteSequence = 0; iteSequence < m_Header.usFrames; iteSequence++)
@@ -76,35 +77,83 @@ namespace AdvHDStaticLibrary
 
 	bool WIP::Decode(std::wstring wsWIP)
 	{
+		//Open WIP
 		std::ifstream ifsWIP(wsWIP, std::ios::binary);
 		if (!ifsWIP.is_open()) return false;
 
-		size_t szWIP = static_cast<size_t>(TDA::FileX::GetFileSize(ifsWIP));
+		//Read Header Index
 		WIP_Struct::WIPHeader header = { 0 };
+		WIP_Struct::WIPEntry entry = { 0 };
 		ifsWIP.read(reinterpret_cast<char*>(&header), sizeof(header));
+		ifsWIP.read(reinterpret_cast<char*>(&entry), sizeof(entry));
 		if (header.usFrames != 1) return false;
 		if (header.usBpp == 8) return false;
 
-		WIP_Struct::WIPEntry entry = { 0 };
-		ifsWIP.read(reinterpret_cast<char*>(&entry), sizeof(entry));
+		//Read EncData
+		char* pEncData = new char[entry.uiSize];
+		ifsWIP.read(pEncData, entry.uiSize);
 
-		size_t szWIPComp = szWIP - sizeof(header) - sizeof(entry);
-		char* pWIPComp = new char[szWIPComp];
-		ifsWIP.read(pWIPComp, szWIPComp);
+		//Deocde To Pixel Array
+		WIPDecoder decoder(pEncData, entry.uiWidth, entry.uiHeigh, header.usBpp / 8);
+		char* pPixelArray = decoder.GetPixelArray();
+		delete[] pEncData;
 
-		char* pDec = nullptr;
-		WIPDecoder decoder;
-		size_t szPixelArray = decoder.DecodePixelArray(pWIPComp, &pDec, entry.uiWidth, entry.uiHeigh, header.usBpp / 8);
-		delete[] pWIPComp;
-
+		//Encode To WebP
 		uint8_t* pWebP = nullptr;
-		size_t szWebP = WebPEncodeLosslessBGR((uint8_t*)pDec, entry.uiWidth, entry.uiHeigh, entry.uiWidth * 3, &pWebP);
+		size_t szWebP = WebPEncodeLosslessBGR((uint8_t*)pPixelArray, entry.uiWidth, entry.uiHeigh, entry.uiWidth * 3, &pWebP);
 
+		//Save File
 		std::ofstream oArray(wsWIP + L".webp", std::ios::binary);
 		oArray.write((char*)pWebP, szWebP);
 		oArray.flush();
 
+		//Clean
 		WebPFree(pWebP);
+		return true;
+	}
+
+	bool WIP::Encode(std::wstring wsWIP, std::wstring wsWebP)
+	{
+		//Open WIP
+		std::ifstream ifsWIP(wsWIP, std::ios::binary);
+		if (!ifsWIP.is_open()) return false;
+
+		//Open WebP
+		std::ifstream ifsWebP(wsWebP, std::ios::binary);
+		if (!ifsWebP.is_open()) return false;
+
+		//Read Header Index
+		WIP_Struct::WIPHeader header = { 0 };
+		WIP_Struct::WIPEntry entry = { 0 };
+		ifsWIP.read(reinterpret_cast<char*>(&header), sizeof(header));
+		ifsWIP.read(reinterpret_cast<char*>(&entry), sizeof(entry));
+		if (header.usFrames != 1) return false;
+		if (header.usBpp == 8) return false;
+
+		//Read WebP
+		size_t szWebP = static_cast<size_t>(TDA::FileX::GetFileSize(ifsWebP));
+		char* pWebP = new char[szWebP];
+		ifsWebP.read(pWebP, szWebP);
+
+		//Decode WebP
+		uint8_t* pPixelArray = WebPDecodeBGR((uint8_t*)pWebP, szWebP, (int*)&entry.uiWidth, (int*)&entry.uiHeigh);
+		if (!pPixelArray) { delete[] pWebP; return false; }
+
+		//Encode WIP
+		WIPEncoder encoder((char*)pPixelArray, entry.uiWidth, entry.uiHeigh, 3);
+		char* pEncData = encoder.GetEncodeData(&entry.uiSize);
+
+		//Clean
+		delete[] pWebP;
+		WebPFree(pPixelArray);
+
+		//Save WIP
+		std::ofstream oWIP(wsWIP + L".new", std::ios::binary);
+		if (!oWIP.is_open()) return false;
+		oWIP.write(reinterpret_cast<char*>(&header), sizeof(header));
+		oWIP.write(reinterpret_cast<char*>(&entry), sizeof(entry));
+		oWIP.write(pEncData, entry.uiSize);
+
 		return true;
 	}
 
@@ -189,7 +238,8 @@ namespace AdvHDStaticLibrary
 	}
 
 
-	WIPDecoder::WIPDecoder()
+	WIPDecoder::WIPDecoder(char* pEncData, size_t nWidth, size_t nHeigh, size_t nChannel) :
+		m_pEncData(pEncData), m_nWidth(nWidth), m_nHeigh(nHeigh), m_nChannel(nChannel)
 	{
 
 	}
@@ -199,29 +249,70 @@ namespace AdvHDStaticLibrary
 
 	}
 
-	size_t WIPDecoder::DecodePixelArray(char* pEnc, char** ppDec, size_t nWidth, size_t nHeigh, size_t nChannel)
+	char* WIPDecoder::GetPixelArray()
 	{
-		size_t szPixelArray = nHeigh * nWidth * nChannel;
+		char* pExpand = new char[GetDecodeSize()];
 
-		char* pDec = new char[szPixelArray];
-		LZSS_Decode(pEnc, pDec);
+		LZSS_AdvHD_Decode(m_pEncData, pExpand);
+		MergeChannel(pExpand, BufferReSize(GetDecodeSize()));
 
-		*ppDec = BufferReSize(szPixelArray);
-		MergeChannel(pDec, *ppDec, nWidth, nHeigh, nChannel);
-
-		delete[] pDec;
-		return szPixelArray;
+		delete[] pExpand;
+		return m_pBuffer;
 	}
 
-	void WIPDecoder::MergeChannel(char* pSplit, char* pMerged, size_t nWidth, size_t nHeigh, size_t nChannel)
+	size_t WIPDecoder::GetDecodeSize()
 	{
-		size_t sizChannel = nHeigh * nWidth * 1;
+		return m_nWidth * m_nHeigh * m_nChannel;
+	}
 
-		for (size_t iteChannel = 0; iteChannel < nChannel; iteChannel++)
+	void WIPDecoder::MergeChannel(char* pSplit, char* pMerged)
+	{
+		size_t sizChannel = m_nHeigh * m_nWidth * 1;
+
+		for (size_t iteChannel = 0; iteChannel < m_nChannel; iteChannel++)
 		{
 			for (size_t itePixel = 0; itePixel < sizChannel; itePixel++)
 			{
-				pMerged[nChannel * itePixel + iteChannel] = pSplit[itePixel];
+				pMerged[m_nChannel * itePixel + iteChannel] = pSplit[itePixel];
+			}
+
+			pSplit += sizChannel;
+		}
+	}
+
+	WIPEncoder::WIPEncoder(char* pPixelArray, size_t nWidth, size_t nHeigh, size_t nChannel) :
+		m_pPixelArray(pPixelArray), m_nWidth(nWidth), m_nHeigh(nHeigh), m_nChannel(nChannel)
+	{
+
+	}
+
+	WIPEncoder::~WIPEncoder()
+	{
+
+	}
+
+	char* WIPEncoder::GetEncodeData(size_t* pEncSize)
+	{
+		size_t szPixelArray = m_nHeigh * m_nWidth * m_nChannel;
+
+		char* pSplit = new char[szPixelArray];
+		SplitChannel(m_pPixelArray, pSplit);
+
+		*pEncSize = Fake_AdvHD_Encode(pSplit, szPixelArray, BufferReSize(szPixelArray * 2));
+
+		delete[] pSplit;
+		return m_pBuffer;
+	}
+
+	void WIPEncoder::SplitChannel(char* pMerged, char* pSplit)
+	{
+		size_t sizChannel = m_nHeigh * m_nWidth * 1;
+
+		for (size_t iteChannel = 0; iteChannel < m_nChannel; iteChannel++)
+		{
+			for (size_t itePixel = 0; itePixel < sizChannel; itePixel++)
+			{
+				pSplit[itePixel] = pMerged[m_nChannel * itePixel + iteChannel];
 			}
 
 			pSplit += sizChannel;

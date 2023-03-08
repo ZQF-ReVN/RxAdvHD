@@ -1,7 +1,7 @@
 #include "ARCV1.h"
-#include "..\TDA\FileX.h"
-#include "..\TDA\StringX.h"
-#include "..\TDA\EnumFiles.h"
+#include "../../ThirdParty/TDA/FileX.h"
+#include "../../ThirdParty/TDA/StringX.h"
+#include "../../ThirdParty/TDA/EnumFiles.h"
 
 #include <Windows.h>
 #include <iostream>

@@ -4,7 +4,7 @@
 #include <fstream>
 
 #include "ARC_Struct.h"
-#include "..\TDA\AutoBuffer.h"
+#include "../../ThirdParty/TDA/AutoBuffer.h"
 
 
 namespace AdvHDStaticLibrary

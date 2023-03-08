@@ -1,6 +1,6 @@
 ﻿#include <Windows.h>
-#include "..\TDA\ConsoleX.h"
-#include "..\TDA\MemX.h"
+#include "../../ThirdParty/TDA/ConsoleX.h"
+#include "../../ThirdParty/TDA/MemX.h"
 #include <fstream>
 
 //HOOKCODE Macro Definition

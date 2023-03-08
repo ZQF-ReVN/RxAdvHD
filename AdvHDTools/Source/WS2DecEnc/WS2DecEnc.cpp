@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "..\AdvHDStaticLibrary\WS2.h"
+#include "../../Modules/AdvHDStaticLibrary/WS2.h"
 
 using namespace AdvHDStaticLibrary;
 
