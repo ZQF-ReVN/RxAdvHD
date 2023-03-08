@@ -43,8 +43,8 @@ int wmain(int argc, wchar_t* argv[])
 			<< L"Command:\n"
 			<< L"S - SplitFrame\n"
 			<< L"M - MergeFrame\n"
-			<< L"D - Decode WIP Only Sigle Frame\n"
-			<< L"E - Encode WIP Only Sigle Frame\n\n";
+			<< L"D - Decode WIP Only Single Frame\n"
+			<< L"E - Encode WIP Only Single Frame\n\n";
 
 		std::wcout 
 			<< argv[0] << L" S cfgbg.wip\n"
