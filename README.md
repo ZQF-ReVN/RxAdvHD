@@ -10,8 +10,8 @@ Pack / Extract .arc For Old Version
 Pack / Extract .arc For New Version  
 
 # WIPEditor
-Decode .wip To WebP（Single WIP）  
-Encode .wip To WebP（Single WIP）  
+Decode .wip To WebP（Single WIP 24bpp）  
+Encode .wip To WebP（Single WIP 24bpp）  
 Multi-.wip Split  
 Multi-.wip Merge  
 
